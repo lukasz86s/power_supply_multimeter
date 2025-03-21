@@ -19,10 +19,10 @@
 #define CS   4
 #define RST  3
 
-#define VOLTAGE_OFFSET 0.1F
-#define CURRENT_RESITOR_VALUE 0.1F 
+#define VOLTAGE_DIVIDER_ERROR_FACTOR 1.2F // error factor for voltage measurnig
+#define CURRENT_RESITOR_VALUE 0.1F  // nominal 0.1 ohm
 #define REFERENCE_VOLT  2.5F
-#define VOLTAGE_DIVIDER_FACTORY  16.0F  // all 15k ohm 1k ohm first step  
+#define VOLTAGE_DIVIDER_FACTORY  16.0F  // all 15k ohm, 1k ohm first step  
 
 
 int voltageOutputPin = A0;
@@ -56,7 +56,7 @@ void loop() {
 
   //subtracting the current resistor from the voltage divider
   voltageVal -= currentVal; 
-  float voltageScore = (float(voltageVal) * ANALOG_FACTORY * VOLTAGE_DIVIDER_FACTORY);
+  float voltageScore = (voltageVal * ANALOG_FACTORY * (VOLTAGE_DIVIDER_FACTORY - VOLTAGE_DIVIDER_ERROR_FACTOR));
   String voltage = String(voltageScore )+" V";
 
 
@@ -74,5 +74,5 @@ void loop() {
   // Wyświetlamy tekst na ekranie.
   display.display();
  
-  _delay_ms(300);
+  _delay_ms(50);
 }
